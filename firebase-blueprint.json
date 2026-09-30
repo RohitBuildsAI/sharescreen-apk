@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FirebaseBlueprint",
+  "type": "object",
+  "properties": {
+    "entities": {
+      "type": "object",
+      "properties": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "uid": { "type": "string" },
+            "email": { "type": "string" },
+            "displayName": { "type": "string" },
+            "photoUrl": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" }
+          },
+          "required": ["uid"]
+        }
+      }
+    }
+  }
+}

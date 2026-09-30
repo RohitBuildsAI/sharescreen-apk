@@ -1,0 +1,6 @@
+{
+  "name": "Share Screen: Parental Control App",
+  "description": "Parental control and device companion app featuring live screen sharing, app usage tracking, notification supervision, and safety insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

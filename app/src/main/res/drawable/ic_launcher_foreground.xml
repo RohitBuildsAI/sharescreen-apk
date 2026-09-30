@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Device 1 (Left phone) -->
+    <path
+        android:fillColor="#E0E6ED"
+        android:pathData="M28,34 C28,31.79 29.79,30 32,30 L44,30 C46.21,30 48,31.79 48,34 L48,74 C48,76.21 46.21,78 44,78 L32,78 C29.79,78 28,76.21 28,74 Z" />
+    <path
+        android:fillColor="#0B132B"
+        android:pathData="M31,36 L45,36 L45,69 L31,69 Z" />
+    <!-- Screen content on Device 1 -->
+    <path
+        android:fillColor="#4CC9F0"
+        android:pathData="M33,40 L43,40 L43,42 L33,42 Z M33,45 L40,45 L40,47 L33,47 Z M33,50 L42,50 L42,52 L33,52 Z" />
+    <path
+        android:fillColor="#E0E6ED"
+        android:pathData="M38,73.5 A1.5,1.5 0 1,0 38,73.6 Z" />
+
+    <!-- Device 2 (Right phone) -->
+    <path
+        android:fillColor="#E0E6ED"
+        android:pathData="M60,34 C60,31.79 61.79,30 64,30 L76,30 C78.21,30 80,31.79 80,34 L80,74 C80,76.21 78.21,78 76,78 L64,78 C61.79,78 60,76.21 60,74 Z" />
+    <path
+        android:fillColor="#0B132B"
+        android:pathData="M63,36 L77,36 L77,69 L63,69 Z" />
+    <!-- Screen content on Device 2 -->
+    <path
+        android:fillColor="#7209B7"
+        android:pathData="M65,40 L75,40 L75,56 L65,56 Z" />
+    <path
+        android:fillColor="#4CC9F0"
+        android:pathData="M67,45 L73,45 L70,51 Z" />
+    <path
+        android:fillColor="#E0E6ED"
+        android:pathData="M70,73.5 A1.5,1.5 0 1,0 70,73.6 Z" />
+
+    <!-- Central Security Shield & Link -->
+    <path
+        android:fillColor="#4361EE"
+        android:pathData="M54,42 C49,42 47,45 47,45 C47,56 54,64 54,64 C54,64 61,56 61,45 C61,45 59,42 54,42 Z" />
+    <path
+        android:fillColor="#F72585"
+        android:pathData="M54,45 C51,45 50,47 50,47 C50,54 54,59 54,59 C54,59 58,54 58,47 C58,47 57,45 54,45 Z" />
+    <!-- Keyhole / Check in shield -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M53,49 L55,49 L55.5,53 L52.5,53 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,48 A1.2,1.2 0 1,0 54,48.1 Z" />
+
+    <!-- Radio / Sync waves between devices -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#4CC9F0"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M48,27 C52,24 56,24 60,27 M45,23 C51,19 57,19 63,23" />
+</vector>
