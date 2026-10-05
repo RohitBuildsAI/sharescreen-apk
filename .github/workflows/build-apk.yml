@@ -54,6 +54,27 @@ jobs:
 
           echo "SUCCESS: Java major version is $JAVA_MAJOR (>= 17)."
 
+      - name: Accept Android SDK licenses and install platform
+        run: |
+          echo "=== Configuring Android SDK licenses and platform ==="
+          SDK_DIR="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDK_MGR="${SDK_DIR}/cmdline-tools/latest/bin/sdkmanager"
+
+          if [ -x "$SDK_MGR" ]; then
+            echo "Found sdkmanager at $SDK_MGR. Accepting licenses..."
+            yes | "$SDK_MGR" --licenses >/dev/null 2>&1 || true
+
+            echo "Ensuring platforms;android-36.1 is installed..."
+            yes | "$SDK_MGR" "platforms;android-36.1" >/dev/null 2>&1 || true
+            echo "Android SDK setup complete."
+          else
+            echo "sdkmanager not found at $SDK_MGR; creating licenses directory fallback."
+            mkdir -p "${SDK_DIR}/licenses"
+            # Pre-populate accepted license hashes if sdkmanager binary is missing
+            echo -e "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "${SDK_DIR}/licenses/android-sdk-license"
+            echo -e "84831b9409646a918e30573bab4c9c91346d8abd" > "${SDK_DIR}/licenses/android-sdk-preview-license"
+          fi
+
       - name: Set up Gradle 9.3.1
         uses: gradle/actions/setup-gradle@v4
         with:
