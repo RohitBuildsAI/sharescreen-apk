@@ -36,8 +36,12 @@ interface AuthenticationRepository {
 }
 
 open class AuthenticationRepositoryImpl(
-    private val auth: FirebaseAuth = Firebase.auth
+    customAuth: FirebaseAuth? = null
 ) : AuthenticationRepository {
+
+    private val auth: FirebaseAuth by lazy {
+        customAuth ?: Firebase.auth
+    }
 
     override val currentUserFlow: Flow<FirebaseUser?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->

@@ -18,6 +18,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate AGP version
+        run: |
+          echo "=== Validating AGP version in gradle/libs.versions.toml ==="
+          if [ ! -f "gradle/libs.versions.toml" ]; then
+            echo "ERROR: gradle/libs.versions.toml does not exist!"
+            exit 1
+          fi
+
+          if grep -E '^\s*agp\s*=\s*"9\.1\.1"' gradle/libs.versions.toml; then
+            echo "SUCCESS: Confirmed AGP version is exactly 9.1.1"
+          else
+            DETECTED_AGP=$(grep -E '^\s*agp\s*=' gradle/libs.versions.toml || echo "not found")
+            echo "ERROR: Expected AGP version '9.1.1', but found: $DETECTED_AGP"
+            exit 1
+          fi
+
       - name: Set up Temurin JDK 17
         uses: actions/setup-java@v4
         with:
@@ -38,7 +54,6 @@ jobs:
           JAVA_VERSION_OUTPUT=$(java -version 2>&1 | head -n 1)
           echo "Raw Java version output: $JAVA_VERSION_OUTPUT"
 
-          # Extract major version number
           JAVA_MAJOR=$(java -version 2>&1 | head -n 1 | awk -F '"' '{print $2}' | awk -F '.' '{if ($1 == "1") print $2; else print $1}')
           echo "Detected Java major version: $JAVA_MAJOR"
 
@@ -54,26 +69,22 @@ jobs:
 
           echo "SUCCESS: Java major version is $JAVA_MAJOR (>= 17)."
 
-      - name: Accept Android SDK licenses and install platform
+      - name: Accept Android SDK licenses and configure platform
         run: |
-          echo "=== Configuring Android SDK licenses and platform ==="
+          echo "=== Setting up Android SDK environment ==="
           SDK_DIR="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
           SDK_MGR="${SDK_DIR}/cmdline-tools/latest/bin/sdkmanager"
 
-          if [ -x "$SDK_MGR" ]; then
-            echo "Found sdkmanager at $SDK_MGR. Accepting licenses..."
-            yes | "$SDK_MGR" --licenses >/dev/null 2>&1 || true
+          mkdir -p "${SDK_DIR}/licenses"
+          printf "24333f8a63b6825ea9c5514f83c2829b004d1fee\nd56f5187479451eabf01fb78af6dfcb131a6481e\n84831b9409646a918e30573bab4c9c91346d8abd\n" > "${SDK_DIR}/licenses/android-sdk-license"
+          printf "84831b9409646a918e30573bab4c9c91346d8abd\n" > "${SDK_DIR}/licenses/android-sdk-preview-license"
 
-            echo "Ensuring platforms;android-36.1 is installed..."
-            yes | "$SDK_MGR" "platforms;android-36.1" >/dev/null 2>&1 || true
-            echo "Android SDK setup complete."
-          else
-            echo "sdkmanager not found at $SDK_MGR; creating licenses directory fallback."
-            mkdir -p "${SDK_DIR}/licenses"
-            # Pre-populate accepted license hashes if sdkmanager binary is missing
-            echo -e "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "${SDK_DIR}/licenses/android-sdk-license"
-            echo -e "84831b9409646a918e30573bab4c9c91346d8abd" > "${SDK_DIR}/licenses/android-sdk-preview-license"
+          if [ -x "$SDK_MGR" ]; then
+            yes | "$SDK_MGR" --licenses >/dev/null 2>&1 || true
+            echo "Ensuring platform 36 and 36.1 are installed..."
+            yes | "$SDK_MGR" "platforms;android-36" "platforms;android-36.1" >/dev/null 2>&1 || true
           fi
+          echo "Android SDK environment ready."
 
       - name: Set up Gradle 9.3.1
         uses: gradle/actions/setup-gradle@v4
@@ -105,6 +116,8 @@ jobs:
           fi
 
       - name: Build debug APK
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.workers.max=2 -Dorg.gradle.jvmargs=-Xmx3g"
         run: |
           echo "=== Building Debug APK ==="
           gradle :app:assembleDebug --stacktrace --no-daemon

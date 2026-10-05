@@ -72,11 +72,30 @@ import com.example.ui.viewmodel.UsageViewModel
 import com.example.ui.auth.SignInScreen
 import com.example.ui.viewmodel.AuthViewModel
 
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            try {
+                val options = FirebaseOptions.Builder()
+                    .setApplicationId(getString(R.string.google_app_id))
+                    .setApiKey(getString(R.string.google_api_key))
+                    .setProjectId(getString(R.string.project_id))
+                    .setGcmSenderId(getString(R.string.gcm_defaultSenderId))
+                    .build()
+                FirebaseApp.initializeApp(this, options)
+            } catch (e: Exception) {
+                try {
+                    FirebaseApp.initializeApp(this)
+                } catch (_: Exception) {}
+            }
+        }
 
         setContent {
             val authViewModel: AuthViewModel = viewModel()

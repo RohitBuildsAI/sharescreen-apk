@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Share Screen: Parental Control App</string>
+    <string name="default_web_client_id" translatable="false">1063630187027-jqe4h2gbied33m70sldab2ui4qpob39m.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">1063630187027</string>
+    <string name="google_api_key" translatable="false">AIzaSyDuX6u88ZejwWSucXA0WCwvuPE8UttzdY0</string>
+    <string name="google_app_id" translatable="false">1:1063630187027:android:6ca648e33b3975807fade6</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDuX6u88ZejwWSucXA0WCwvuPE8UttzdY0</string>
+    <string name="project_id" translatable="false">gen-lang-client-0409914162</string>
 </resources>
